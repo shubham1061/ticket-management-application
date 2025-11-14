@@ -5,9 +5,12 @@ COPY . .
 RUN mvn clean package -DskipTests
 
 # ---- Run Stage ----
-FROM eclipse-temurin:17-jre-jammy
+FROM eclipse-temurin:17-jdk-focal
 WORKDIR /app
 COPY --from=build /app/target/csa-0.0.1-SNAPSHOT.jar app.jar
 
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT  ["java", \
+    "-Djdk.tls.client.protocols=TLSv1.2,TLSv1.3", \
+    "-Dhttps.protocols=TLSv1.2,TLSv1.3", \
+    "-jar", "app.jar"]
