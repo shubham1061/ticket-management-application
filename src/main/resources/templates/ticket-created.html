@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px 5px 0 0;
+        }
+        .content {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 0 0 5px 5px;
+        }
+        .ticket-info {
+            background-color: white;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #4CAF50;
+        }
+        .priority-high {
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+        .priority-urgent {
+            color: #ff0000;
+            font-weight: bold;
+        }
+        .priority-medium {
+            color: #ffa500;
+            font-weight: bold;
+        }
+        .priority-low {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #777;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2>🎫 New Support Ticket Created</h2>
+    </div>
+    
+    <div class="content">
+        <p>Hello <strong th:text="${recipientName}">Admin</strong>,</p>
+        
+        <p>A new support ticket has been created and requires your attention.</p>
+        
+        <div class="ticket-info">
+            <h3>Ticket Details</h3>
+            <p><strong>Ticket Number:</strong> <span th:text="${ticketNumber}">TCK-00001</span></p>
+            <p><strong>Title:</strong> <span th:text="${title}">Ticket Title</span></p>
+            <p><strong>Description:</strong><br/><span th:text="${description}">Description here</span></p>
+            <p><strong>Priority:</strong> 
+                <span th:text="${priority}" 
+                      th:class="${priority == 'URGENT' ? 'priority-urgent' : 
+                                priority == 'HIGH' ? 'priority-high' : 
+                                priority == 'MEDIUM' ? 'priority-medium' : 
+                                'priority-low'}">HIGH</span>
+            </p>
+            <p><strong>Status:</strong> <span th:text="${status}">OPEN</span></p>
+            <p><strong>Customer:</strong> <span th:text="${customerName}">John Doe</span> 
+               (<span th:text="${customerEmail}">john@example.com</span>)</p>
+            <p><strong>Created At:</strong> <span th:text="${createdAt}">2025-10-07 10:30:00</span></p>
+        </div>
+        
+        <p>Please review and assign this ticket to the appropriate agent.</p>
+        
+        <a href="http://localhost:3000/tickets" class="button">View Ticket</a>
+        
+        <p style="margin-top: 20px;">
+            <small>You are receiving this email because you are a <span th:text="${recipientRole}">Administrator</span> 
+            and are responsible for managing support tickets.</small>
+        </p>
+    </div>
+    
+    <div class="footer">
+        <p>This is an automated email from the Support Ticket System. Please do not reply to this email.</p>
+    </div>
+</body>
+</html>

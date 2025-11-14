@@ -1,0 +1,66 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api/v1
+
+
+spring:
+  application:
+    name: CustomerSupportApplication
+
+  data:
+    mongodb:
+      uri: mongodb+srv://kaushikshubham50:kEmD6hiTvVApOzs7@cluster0.gwuc0xb.mongodb.net/ticketdb?retryWrites=true&w=majority
+      auto-index-creation: false
+
+app:
+  security:
+    jwt:
+      secret: ${JWT_SECRET:11899db7f295e8f890a06171e779f1e44006b73dcd50091d79a4b6aad6f62d43}
+      expiration: 86400000 # 24 hours in milliseconds
+      refresh-expiration: 604800000 # 7 days in milliseconds
+
+webhook:
+  delivery:
+    enabled: true
+    timeout-seconds: 30
+    max-retries: 3
+    initial-retry-delay-seconds: 60
+    max-retry-delay-seconds: 3600
+
+  signature:
+    algorithm: HmacSHA256
+    header-name: X-Webhook-Signature
+  
+  async:
+    enabled: true
+    thread-pool-size: 10
+    queue-capacity: 100
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: kaushikshubham50@gmail.com
+    password: kssb jigu ncoh upyd
+    from: kaushikshubham50@gmail.com
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+
+# Email sender address
+
+
+# Enable async for email sending
+  task:
+    execution:
+      pool:
+        core-size: 2
+        max-size: 5
+        queue-capacity: 100
