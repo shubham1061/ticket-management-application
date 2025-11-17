@@ -242,4 +242,82 @@ public class ExcelExportService {
         return outputStream.toByteArray();
     }
 }
+
+public byte[] generateImportTemplate() throws IOException {
+    try (Workbook workbook = new XSSFWorkbook()) {
+        Sheet sheet = workbook.createSheet("Tickets Template");
+        
+        // Create header style
+        CellStyle headerStyle = createHeaderStyle(workbook);
+        
+        // Create header row with instructions
+        Row instructionRow = sheet.createRow(0);
+        Cell instructionCell = instructionRow.createCell(0);
+        instructionCell.setCellValue("Instructions: Fill in the columns below. Required fields are marked with *");
+        
+        CellStyle instructionStyle = workbook.createCellStyle();
+        Font instructionFont = workbook.createFont();
+        instructionFont.setBold(true);
+        instructionFont.setColor(IndexedColors.DARK_RED.getIndex());
+        instructionStyle.setFont(instructionFont);
+        instructionCell.setCellStyle(instructionStyle);
+        
+        // Merge instruction cells
+        sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(0, 0, 0, 10));
+        
+        // Create header row
+        Row headerRow = sheet.createRow(1);
+        String[] headers = {
+            "Ticket ID (Optional)", 
+            "Title *", 
+            "Description *", 
+            "Status *", 
+            "Priority *", 
+            "Category", 
+            "Customer Email *", 
+            "Assigned Agent Email", 
+            "Created At (yyyy-MM-dd HH:mm:ss)", 
+            "Updated At (yyyy-MM-dd HH:mm:ss)", 
+            "Resolved At (yyyy-MM-dd HH:mm:ss)"
+        };
+        
+        for (int i = 0; i < headers.length; i++) {
+            Cell cell = headerRow.createCell(i);
+            cell.setCellValue(headers[i]);
+            cell.setCellStyle(headerStyle);
+        }
+        
+        // Add sample data row
+        Row sampleRow = sheet.createRow(2);
+        sampleRow.createCell(0).setCellValue(""); // Leave ID empty for new tickets
+        sampleRow.createCell(1).setCellValue("Sample Ticket Title");
+        sampleRow.createCell(2).setCellValue("Sample ticket description");
+        sampleRow.createCell(3).setCellValue("OPEN");
+        sampleRow.createCell(4).setCellValue("MEDIUM");
+        sampleRow.createCell(5).setCellValue("Technical");
+        sampleRow.createCell(6).setCellValue("customer@example.com");
+        sampleRow.createCell(7).setCellValue("agent@example.com");
+        sampleRow.createCell(8).setCellValue("2024-11-14 10:00:00");
+        sampleRow.createCell(9).setCellValue("2024-11-14 10:00:00");
+        sampleRow.createCell(10).setCellValue("");
+        
+        // Add validation info
+        Row validationRow = sheet.createRow(4);
+        validationRow.createCell(0).setCellValue("Valid Status values:");
+        validationRow.createCell(1).setCellValue("OPEN, IN_PROGRESS, RESOLVED, CLOSED");
+        
+        Row priorityRow = sheet.createRow(5);
+        priorityRow.createCell(0).setCellValue("Valid Priority values:");
+        priorityRow.createCell(1).setCellValue("LOW, MEDIUM, HIGH, URGENT");
+        
+        // Auto-size columns
+        for (int i = 0; i < headers.length; i++) {
+            sheet.autoSizeColumn(i);
+        }
+        
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        workbook.write(outputStream);
+        return outputStream.toByteArray();
+    }
+}
 }

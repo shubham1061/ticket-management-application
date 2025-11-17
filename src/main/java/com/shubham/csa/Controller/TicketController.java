@@ -312,4 +312,18 @@ public ResponseEntity<byte[]> exportFilteredTickets(
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
+
+     @GetMapping("/import/template")
+    public ResponseEntity<byte[]> downloadImportTemplate() throws IOException {
+        byte[] template = excelExportService.generateImportTemplate();
+        
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDispositionFormData("attachment", "ticket_import_template.xlsx");
+        
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(template);
+    }
 }
