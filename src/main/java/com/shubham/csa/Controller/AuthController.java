@@ -19,6 +19,12 @@ import com.shubham.csa.dto.RefreshTokenRequest;
 import com.shubham.csa.dto.UserDto;
 @RestController
 @RequestMapping("/api/auth")
+@CrossOrigin(
+    origins = {"http://localhost:5173", "http://localhost:3000"},
+    allowedHeaders = "*",
+    allowCredentials = "true",
+    methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS}
+)
 public class AuthController {
 
     @Autowired
