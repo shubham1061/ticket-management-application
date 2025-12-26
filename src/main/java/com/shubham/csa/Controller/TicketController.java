@@ -323,7 +323,7 @@ public ResponseEntity<byte[]> exportFilteredTickets(
         headers.setContentDispositionFormData("attachment", "ticket_import_template.xlsx");
         
         return ResponseEntity.ok()
-                .headers(headers)
+                .headers(headers)   
                 .body(template);
     }
 }
